@@ -1,13 +1,26 @@
 import { createContext, useContext, type ReactNode } from "react";
 import styles from "./Table.module.css";
 
+interface HeaderInfo {
+  label: string;
+  width?: string;
+}
+
+interface TableContextValue {
+  gridTemplate: string;
+  headers: HeaderInfo[];
+}
+
 interface TableProps {
-  headers: { label: string; width?: string }[];
+  headers: HeaderInfo[];
   children: ReactNode;
   className?: string;
 }
 
-const GridContext = createContext("");
+const TableContext = createContext<TableContextValue>({
+  gridTemplate: "",
+  headers: [],
+});
 
 export function Table({ headers, children, className }: TableProps) {
   const gridTemplate = headers
@@ -17,7 +30,7 @@ export function Table({ headers, children, className }: TableProps) {
   const wrapperClasses = [styles.wrapper, className].filter(Boolean).join(" ");
 
   return (
-    <GridContext.Provider value={gridTemplate}>
+    <TableContext.Provider value={{ gridTemplate, headers }}>
       <div className={wrapperClasses}>
         <div className={styles.inner}>
           <div
@@ -30,10 +43,10 @@ export function Table({ headers, children, className }: TableProps) {
               </div>
             ))}
           </div>
-          <div className={styles.rows}>{children}</div>
+          <div>{children}</div>
         </div>
       </div>
-    </GridContext.Provider>
+    </TableContext.Provider>
   );
 }
 
@@ -44,7 +57,7 @@ interface TableRowProps {
 }
 
 export function TableRow({ columns, onClick, className }: TableRowProps) {
-  const gridTemplate = useContext(GridContext);
+  const { gridTemplate, headers } = useContext(TableContext);
 
   const rowClasses = [
     styles.row,
@@ -57,11 +70,12 @@ export function TableRow({ columns, onClick, className }: TableRowProps) {
   return (
     <div
       className={rowClasses}
-      style={{ gridTemplateColumns: gridTemplate }}
+      style={{ "--table-cols": gridTemplate } as React.CSSProperties}
       onClick={onClick}
     >
       {columns.map((col, i) => (
         <div key={i} className={styles.cell}>
+          <span className={styles.cellLabel}>{headers[i]?.label}</span>
           {col}
         </div>
       ))}
