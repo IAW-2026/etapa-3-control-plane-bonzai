@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { Store, CreditCard, Users, Truck } from "lucide-react";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { cn } from "@/lib/utils";
+import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
+import styles from "./page.module.css";
 
 const apps = [
   { name: "Seller App", desc: "Products, orders, users, reservations, reviews and system health.", href: "/dashboard/seller", icon: Store, color: "var(--color-primary)", status: "Connected" },
@@ -17,26 +17,20 @@ export default function DashboardHome() {
     <div>
       <PageHeader title="Control" italic="Plane" description="Centralized management for the Bonzai ecosystem." />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className={styles.appGrid}>
         {apps.map((app) => (
-          <Link key={app.name} href={app.href}
-            className="no-underline border border-[var(--color-border)] bg-[var(--color-bg)] p-6 flex items-start gap-5 transition-all duration-200 hover:border-[var(--color-primary)] group"
-          >
-            <div className="w-12 h-12 flex items-center justify-center shrink-0" style={{ background: "rgba(27,61,47,0.05)", color: app.color }}>
+          <Link key={app.name} href={app.href} className={styles.appCard}>
+            <div className={styles.appIcon} style={{ background: "rgba(27,61,47,0.05)", color: app.color }}>
               <app.icon size={22} />
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 flex-wrap">
-                <span className="font-serif text-lg text-[var(--color-primary)]">{app.name}</span>
-                <span className={cn("text-[0.55rem] uppercase tracking-[0.1em] font-semibold px-2 py-0.5 border",
-                  app.status === "Connected"
-                    ? "text-[var(--color-success)] bg-[rgba(22,163,74,0.05)] border-[rgba(22,163,74,0.2)]"
-                    : "text-[var(--color-warning)] bg-[rgba(139,115,85,0.05)] border-[rgba(139,115,85,0.2)]"
-                )}>
+            <div className={styles.appBody}>
+              <div className={styles.appNameRow}>
+                <span className={styles.appName}>{app.name}</span>
+                <span className={`${styles.statusBadge} ${app.status === "Connected" ? styles.statusConnected : styles.statusPending}`}>
                   {app.status}
                 </span>
               </div>
-              <p className="text-sm text-[var(--color-text-muted)] mt-2">{app.desc}</p>
+              <p className={styles.appDesc}>{app.desc}</p>
             </div>
           </Link>
         ))}

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Sidebar, MobileMenuButton } from "@/components/layout/Sidebar";
+import { Sidebar, MobileMenuButton } from "@/components/layout/Sidebar/Sidebar";
 import { useAuth } from "@/lib/auth";
-import { Spinner } from "@/components/ui/Spinner";
+import { Spinner } from "@/components/ui/Spinner/Spinner";
+import styles from "./layout.module.css";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -20,20 +21,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!isLoaded || !isAdmin) {
     return (
-      <div className="flex-1 flex items-center justify-center">
+      <div className={styles.loading}>
         <Spinner />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen">
-      <div className="fixed top-4 left-4 z-50 lg:hidden">
+    <div className={styles.container}>
+      <div className={styles.mobileMenu}>
         <MobileMenuButton onClick={() => setSidebarOpen(true)} />
       </div>
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <main className="flex-1 bg-[var(--color-neutral)] px-5 pt-16 pb-8 sm:px-6 sm:pt-8 lg:px-12 lg:py-10">
-        <div style={{ width: "min(100%, 1200px)", margin: "0 auto" }}>{children}</div>
+      <main className={styles.main}>
+        <div className={styles.inner}>{children}</div>
       </main>
     </div>
   );

@@ -1,8 +1,8 @@
 "use client";
 
 import { Truck, Construction } from "lucide-react";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { AppPlaceholder } from "@/app/dashboard/payments/page";
+import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
+import { AppPlaceholder } from "@/app/dashboard/placeholder";
 
 export default function ShippingPage() {
   return (

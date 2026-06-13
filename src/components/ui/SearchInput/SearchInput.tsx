@@ -3,7 +3,7 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import { useCallback } from "react";
-import { cn } from "@/lib/utils";
+import styles from "./SearchInput.module.css";
 
 interface SearchInputProps {
   param?: string;
@@ -32,17 +32,17 @@ export function SearchInput({ param = "search", placeholder = "Search...", class
   );
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={[styles.wrapper, className].filter(Boolean).join(" ")}>
       <input
         value={value}
         onChange={(e) => setSearch(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-[0.6rem] text-sm border-[1.5px] border-[var(--color-border)] rounded-xl outline-none transition-all duration-200 hover:border-[var(--color-primary)] focus:border-[var(--color-primary)]"
+        className={styles.input}
       />
       {value && (
         <button
           onClick={() => setSearch("")}
-          className="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center text-[var(--color-text-muted)] rounded-full hover:bg-[var(--color-neutral-dark)] cursor-pointer"
+          className={styles.clearButton}
           aria-label="Clear search"
         >
           <X size={14} />

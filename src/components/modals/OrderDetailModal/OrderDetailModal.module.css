@@ -1,0 +1,195 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orderId {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+.orderShortId {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+.orderDate {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 1.5rem;
+  row-gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.infoLabel {
+  color: var(--color-text-muted);
+}
+
+.infoValue {
+  font-family: var(--font-serif);
+  font-weight: 500;
+}
+
+.infoMono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.actionRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sectionTitle {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #aaa;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.timelineList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timelineEntry {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.timelineDot {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.timelineInnerDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.timelineDetail {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.timelineDate {
+  font-size: 0.6rem;
+  color: #aaa;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.itemRow:last-child {
+  border-bottom: none;
+}
+
+.itemName {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.itemQuantity {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-left: 0.5rem;
+}
+
+.itemSubtotal {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+}
+
+.notFound {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  font-size: 0.875rem;
+}
+
+/* ── Modal action buttons ── */
+.modalBtn {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.modalBtnSecondary {
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.modalBtnPrimary {
+  border: none;
+  background: var(--color-primary);
+  color: white;
+}
+
+.modalBtnPrimary:disabled {
+  opacity: 0.4;
+}
+
+.modalBtnWarning {
+  border: none;
+  background: var(--color-warning);
+  color: white;
+}
+
+.modalBtnWarning:disabled {
+  opacity: 0.4;
+}

@@ -5,14 +5,15 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Users } from "lucide-react";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { StatCard } from "@/components/ui/StatCard";
-import { Table, TableRow } from "@/components/ui/Table";
-import { SearchInput } from "@/components/ui/SearchInput";
-import { Pagination } from "@/components/ui/Pagination";
-import { Spinner } from "@/components/ui/Spinner";
-import { EmptyState } from "@/components/ui/EmptyState";
-import { Badge } from "@/components/ui/Badge";
+import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
+import { StatCard } from "@/components/ui/StatCard/StatCard";
+import { Table, TableRow } from "@/components/ui/Table/Table";
+import { SearchInput } from "@/components/ui/SearchInput/SearchInput";
+import { Pagination } from "@/components/ui/Pagination/Pagination";
+import { Spinner } from "@/components/ui/Spinner/Spinner";
+import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
+import { Badge } from "@/components/ui/Badge/Badge";
+import styles from "./page.module.css";
 
 const headers = [
   { label: "Email", width: "2fr" },
@@ -40,18 +41,18 @@ export default function UsersPage() {
   return (
     <div>
       <PageHeader title="Users" italic="" description="All sellers registered on the platform." />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      <div className={styles.statGrid}>
         <StatCard icon={<Users size={16} />} value={data?.total ?? "—"} label="Total Sellers" />
       </div>
-      <div className="mb-6 max-w-sm"><SearchInput placeholder="Search by email or ID..." /></div>
+      <div className={styles.searchWrapper}><SearchInput placeholder="Search by email or ID..." /></div>
       {loading ? <Spinner /> : !data?.users?.length ? <EmptyState title="No users found" /> : <>
         <Table headers={headers}>
           {data.users.map((u: any) => (
-            <TableRow key={u.id} gridTemplate={headers.map((h) => h.width).join(" ")} onClick={() => router.push(`/dashboard/seller/users/${u.clerkId}`)} columns={[
-              <span className="font-serif text-sm font-medium">{u.email}</span>,
+             <TableRow key={u.id} onClick={() => router.push(`/dashboard/seller/users/${u.clerkId}`)} columns={[
+              <span style={{ fontFamily: "var(--font-serif)", fontSize: "0.875rem", fontWeight: 500 }}>{u.email}</span>,
               <Badge variant={u.suspended ? "warning" : "success"}>{u.suspended ? "Disabled" : "Active"}</Badge>,
               <Badge variant={u.approved ? "success" : "warning"}>{u.approved ? "Yes" : "No"}</Badge>,
-              <span className="text-xs text-[var(--color-text-muted)]">{formatDate(u.createdAt)}</span>,
+              <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{formatDate(u.createdAt)}</span>,
             ]} />
           ))}
         </Table>

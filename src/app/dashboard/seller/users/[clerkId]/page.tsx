@@ -6,12 +6,13 @@ import { ArrowLeft, Package, ShoppingCart, DollarSign, Star } from "lucide-react
 import Link from "next/link";
 import { api } from "@/lib/api";
 import { formatCurrency } from "@/lib/utils";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { StatCard } from "@/components/ui/StatCard";
-import { Badge } from "@/components/ui/Badge";
-import { Spinner } from "@/components/ui/Spinner";
-import Button from "@/components/ui/Button";
-import { Modal } from "@/components/ui/Modal";
+import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
+import { StatCard } from "@/components/ui/StatCard/StatCard";
+import { Badge } from "@/components/ui/Badge/Badge";
+import { Spinner } from "@/components/ui/Spinner/Spinner";
+import Button from "@/components/ui/Button/Button";
+import { Modal } from "@/components/ui/Modal/Modal";
+import styles from "./page.module.css";
 
 export default function UserDetailPage() {
   const { clerkId } = useParams<{ clerkId: string }>();
@@ -42,23 +43,23 @@ export default function UserDetailPage() {
   };
 
   if (loading) return <Spinner />;
-  if (!data) return <p className="text-center py-12 text-[var(--color-text-muted)]">User not found.</p>;
+  if (!data) return <p className={styles.errorState}>User not found.</p>;
 
   const { user, activity } = data;
 
   return (
     <div>
-      <Link href="/dashboard/seller/users" className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.1em] text-[var(--color-text-muted)] no-underline hover:text-[var(--color-primary)] mb-4">
+      <Link href="/dashboard/seller/users" className={styles.backLink}>
         <ArrowLeft size={14} /> Back to Users
       </Link>
       <PageHeader title="User" italic={user.email} />
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
+      <div className={styles.statGrid}>
         <StatCard icon={<Package size={16} />} value={activity?.totalProducts ?? 0} label="Products" />
         <StatCard icon={<ShoppingCart size={16} />} value={activity?.totalOrders ?? 0} label="Orders" />
         <StatCard icon={<DollarSign size={16} />} value={formatCurrency(activity?.totalRevenue ?? 0)} label="Revenue" />
         <StatCard icon={<Star size={16} />} value={activity?.review ? `${activity.review.rating}/5` : "—"} label="Rating" />
       </div>
-      <div className="flex gap-3 mb-8">
+      <div className={styles.badgeRow}>
         <Badge variant={user.suspended ? "warning" : "success"}>{user.suspended ? "Disabled" : "Active"}</Badge>
         <Badge variant={user.approved ? "success" : "warning"}>{user.approved ? "Approved" : "Pending"}</Badge>
         {user.suspended ? (
@@ -68,13 +69,13 @@ export default function UserDetailPage() {
         )}
       </div>
       {activity?.products?.length > 0 && (
-        <div className="mb-8">
-          <h3 className="text-[0.6rem] uppercase tracking-[0.15em] text-[#aaa] font-semibold mb-3">Products ({activity.products.length})</h3>
-          <div className="space-y-2">
+        <div style={{ marginBottom: "2rem" }}>
+          <h3 className={styles.sectionTitle}>Products ({activity.products.length})</h3>
+          <div className={styles.productList}>
             {activity.products.map((p: any) => (
-              <div key={p.id} className="flex justify-between items-center py-2 px-4 border border-[var(--color-border)] bg-[var(--color-bg)]">
-                <span className="font-serif text-sm font-medium">{p.name}</span>
-                <span className="font-serif text-sm">{formatCurrency(p.price)}</span>
+              <div key={p.id} className={styles.productCard}>
+                <span className={styles.productName}>{p.name}</span>
+                <span className={styles.productPrice}>{formatCurrency(p.price)}</span>
               </div>
             ))}
           </div>
@@ -84,8 +85,8 @@ export default function UserDetailPage() {
         title={confirmModal === "disable" ? "Disable User" : "Enable User"}
         description={confirmModal === "disable" ? "This will suspend the seller." : "This will reactivate the seller."}
         actions={<>
-          <button onClick={() => setConfirmModal(null)} className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-4 py-2 border border-[var(--color-border)] bg-transparent text-[var(--color-text-muted)] cursor-pointer">Cancel</button>
-          <button onClick={handleAction} disabled={acting} className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-4 py-2 border-none bg-[var(--color-primary)] text-white cursor-pointer disabled:opacity-40">{acting ? "..." : "Confirm"}</button>
+          <button onClick={() => setConfirmModal(null)} className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}>Cancel</button>
+          <button onClick={handleAction} disabled={acting} className={`${styles.modalBtn} ${styles.modalBtnPrimary}`}>{acting ? "..." : "Confirm"}</button>
         </>}
       />
     </div>

@@ -5,13 +5,14 @@ import { useSearchParams } from "next/navigation";
 import { CreditCard, DollarSign } from "lucide-react";
 import { api } from "@/lib/api";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { StatCard } from "@/components/ui/StatCard";
-import { Table, TableRow } from "@/components/ui/Table";
-import { Pagination } from "@/components/ui/Pagination";
-import { Spinner } from "@/components/ui/Spinner";
-import { EmptyState } from "@/components/ui/EmptyState";
-import { Badge } from "@/components/ui/Badge";
+import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
+import { StatCard } from "@/components/ui/StatCard/StatCard";
+import { Table, TableRow } from "@/components/ui/Table/Table";
+import { Pagination } from "@/components/ui/Pagination/Pagination";
+import { Spinner } from "@/components/ui/Spinner/Spinner";
+import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
+import { Badge } from "@/components/ui/Badge/Badge";
+import styles from "./page.module.css";
 
 const headers = [
   { label: "ID", width: "1.5fr" },
@@ -39,7 +40,7 @@ export default function PurchasesPage() {
     <div>
       <PageHeader title="Purchases" italic="" description="All purchases across the platform." />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      <div className={styles.statGrid}>
         <StatCard icon={<CreditCard size={16} />} value={data?.total ?? "—"} label="Total Purchases" />
       </div>
 
@@ -53,13 +54,12 @@ export default function PurchasesPage() {
             {data.purchases.map((p: any) => (
               <TableRow
                 key={p.id}
-                gridTemplate={headers.map((h) => h.width).join(" ")}
                 columns={[
-                  <span className="font-mono text-xs text-[var(--color-text-muted)]">{p.id.slice(0, 8)}</span>,
-                  <span className="text-sm">{formatDate(p.createdAt)}</span>,
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{p.id.slice(0, 8)}</span>,
+                  <span style={{ fontSize: "0.875rem" }}>{formatDate(p.createdAt)}</span>,
                   <Badge variant="primary">{p.orders?.length || 0}</Badge>,
                   <span>{(p.orders || []).reduce((s: number, o: any) => s + (o.items?.length || 0), 0)}</span>,
-                  <span className="font-serif font-medium text-sm">
+                  <span style={{ fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: "0.875rem" }}>
                     {formatCurrency((p.orders || []).reduce((s: number, o: any) => s + o.total, 0))}
                   </span>,
                 ]}

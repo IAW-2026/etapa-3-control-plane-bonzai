@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import styles from "./Pagination.module.css";
 
 interface PaginationProps {
   total: number;
@@ -23,21 +24,21 @@ export function Pagination({ total, page, limit }: PaginationProps) {
   };
 
   return (
-    <div className="flex items-center justify-center gap-4 py-6">
+    <div className={styles.wrapper}>
       <button
         onClick={() => goTo(page - 1)}
         disabled={page <= 1}
-        className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-4 py-2 border border-[var(--color-border)] text-[var(--color-text)] bg-transparent cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
+        className={styles.button}
       >
         Previous
       </button>
-      <span className="text-sm text-[var(--color-text-muted)]">
+      <span className={styles.pageInfo}>
         {page} / {totalPages}
       </span>
       <button
         onClick={() => goTo(page + 1)}
         disabled={page >= totalPages}
-        className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-4 py-2 border border-[var(--color-border)] text-[var(--color-text)] bg-transparent cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
+        className={styles.button}
       >
         Next
       </button>

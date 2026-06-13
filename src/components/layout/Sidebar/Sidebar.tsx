@@ -20,7 +20,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useClerk, useUser } from "@clerk/nextjs";
-import { cn } from "@/lib/utils";
+import styles from "./Sidebar.module.css";
 
 interface NavItem {
   label: string;
@@ -94,28 +94,26 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
     setExpanded((prev) => ({ ...prev, [label]: !prev[label] }));
   };
 
+  const allAppsClasses = [
+    styles.allAppsLink,
+    pathname === "/dashboard" ? styles.allAppsLinkActive : styles.allAppsLinkInactive,
+  ].filter(Boolean).join(" ");
+
   const sidebarContent = (
-    <div className="h-full flex flex-col bg-white">
-      <div className="px-6 py-7 border-b border-[var(--color-border)]">
-        <Link href="/dashboard" className="flex items-center gap-2.5 no-underline">
-          <div className="w-8 h-8 bg-[var(--color-primary)] text-white flex items-center justify-center font-serif text-sm">
-            B
-          </div>
-          <span className="font-serif text-xl text-[var(--color-primary)] tracking-tight">Control Plane</span>
+    <div className={styles.sidebar}>
+      <div className={styles.logo}>
+        <Link href="/dashboard" className={styles.logoLink}>
+          <div className={styles.logoIcon}>B</div>
+          <span className={styles.logoText}>Control Plane</span>
         </Link>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+      <div className={styles.nav}>
         <nav>
           <Link
             href="/dashboard"
             onClick={onClose}
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 text-[0.75rem] uppercase tracking-[0.1em] font-semibold transition-all duration-200 no-underline",
-              pathname === "/dashboard"
-                ? "text-[var(--color-primary)] bg-[rgba(27,61,47,0.05)] border-l-3 border-[var(--color-primary)]"
-                : "text-[var(--color-text-muted)] hover:text-[var(--color-primary)]"
-            )}
+            className={allAppsClasses}
           >
             <LayoutDashboard size={16} />
             All Apps
@@ -126,51 +124,53 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
           <nav key={section.label}>
             <button
               onClick={() => toggleSection(section.label)}
-              className="w-full flex items-center justify-between px-2 mb-2 text-[0.65rem] uppercase tracking-[0.2em] text-[#aaa] font-semibold cursor-pointer hover:text-[var(--color-primary)] transition-colors"
+              className={styles.sectionButton}
             >
-              <span className="flex items-center gap-2">
+              <span className={styles.sectionLabel}>
                 {section.icon}
                 {section.label}
               </span>
               {expanded[section.label] ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
             </button>
             {expanded[section.label] && (
-              <ul className="space-y-0.5">
-                {section.items.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={onClose}
-                      className={cn(
-                        "flex items-center gap-3 px-3 py-2.5 text-[0.75rem] uppercase tracking-[0.1em] font-semibold transition-all duration-200 no-underline",
-                        isActive(item.href)
-                          ? "text-[var(--color-primary)] bg-[rgba(27,61,47,0.05)] border-l-3 border-[var(--color-primary)]"
-                          : "text-[var(--color-text-muted)] hover:text-[var(--color-primary)]"
-                      )}
-                    >
-                      {item.icon}
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
+              <ul className={styles.itemList}>
+                {section.items.map((item) => {
+                  const linkClasses = [
+                    styles.navLink,
+                    isActive(item.href) ? styles.navLinkActive : styles.navLinkInactive,
+                  ].filter(Boolean).join(" ");
+
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={onClose}
+                        className={linkClasses}
+                      >
+                        {item.icon}
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </nav>
         ))}
       </div>
 
-      <div className="px-4 py-5 border-t border-[var(--color-border)]">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-8 h-8 bg-[var(--color-primary)] text-white flex items-center justify-center font-serif text-sm shrink-0">
+      <div className={styles.footer}>
+        <div className={styles.userInfo}>
+          <div className={styles.userAvatar}>
             {user?.firstName?.charAt(0) || "A"}
           </div>
-          <div className="min-w-0">
-            <div className="font-serif text-sm text-[var(--color-primary)] truncate">{user?.fullName || "Admin"}</div>
-            <div className="text-[0.65rem] text-[var(--color-text-muted)] truncate">{user?.primaryEmailAddress?.emailAddress || "Control Plane"}</div>
+          <div>
+            <div className={styles.userName}>{user?.fullName || "Admin"}</div>
+            <div className={styles.userEmail}>{user?.primaryEmailAddress?.emailAddress || "Control Plane"}</div>
           </div>
         </div>
         <button onClick={() => signOut({ redirectUrl: "/login" })}
-          className="w-full flex items-center justify-center gap-2 text-[0.7rem] uppercase tracking-[0.1em] font-semibold py-2.5 border border-[var(--color-border)] bg-transparent cursor-pointer transition-colors hover:bg-black hover:text-white"
+          className={styles.logoutButton}
         >
           <LogOut size={12} /> Logout
         </button>
@@ -180,13 +180,13 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
   return (
     <>
-      <div className="hidden lg:block w-[18rem] shrink-0">
-        <div className="fixed top-0 left-0 w-[18rem] h-full z-30">{sidebarContent}</div>
+      <div className={styles.desktopSidebar}>
+        <div className={styles.desktopFixed}>{sidebarContent}</div>
       </div>
       {isOpen && (
         <>
-          <div className="fixed inset-0 z-40 bg-[rgba(27,61,47,0.2)] backdrop-blur-sm lg:hidden" onClick={onClose} />
-          <div className="fixed inset-y-0 left-0 z-50 w-[18rem] lg:hidden">{sidebarContent}</div>
+          <div className={styles.mobileOverlay} onClick={onClose} />
+          <div className={styles.mobileSidebar}>{sidebarContent}</div>
         </>
       )}
     </>
@@ -195,7 +195,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
 export function MobileMenuButton({ onClick }: { onClick: () => void }) {
   return (
-    <button onClick={onClick} className="lg:hidden p-2 text-[var(--color-primary)] cursor-pointer" aria-label="Toggle menu">
+    <button onClick={onClick} className={styles.mobileMenuButton} aria-label="Toggle menu">
       <Menu size={20} />
     </button>
   );

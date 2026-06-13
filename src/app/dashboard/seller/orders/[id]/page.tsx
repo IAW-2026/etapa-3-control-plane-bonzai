@@ -6,12 +6,13 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { api } from "@/lib/api";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Spinner } from "@/components/ui/Spinner";
-import { PageHeader } from "@/components/ui/PageHeader";
-import Button from "@/components/ui/Button";
-import { Modal } from "@/components/ui/Modal";
+import { Card } from "@/components/ui/Card/Card";
+import { Badge } from "@/components/ui/Badge/Badge";
+import { Spinner } from "@/components/ui/Spinner/Spinner";
+import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
+import Button from "@/components/ui/Button/Button";
+import { Modal } from "@/components/ui/Modal/Modal";
+import styles from "./page.module.css";
 
 const statusVariant: Record<string, "default" | "primary" | "success" | "warning" | "error"> = {
   PENDING: "warning",
@@ -76,24 +77,24 @@ export default function OrderDetailPage() {
   };
 
   if (loading) return <Spinner />;
-  if (!order) return <p className="text-center py-12 text-[var(--color-text-muted)]">Order not found.</p>;
+  if (!order) return <p style={{ textAlign: "center", padding: "3rem 0", color: "var(--color-text-muted)" }}>Order not found.</p>;
 
   const o = order;
 
   return (
     <div>
-      <Link href="/dashboard/seller/orders" className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.1em] text-[var(--color-text-muted)] no-underline hover:text-[var(--color-primary)] mb-4">
+      <Link href="/dashboard/seller/orders" className={styles.backLink}>
         <ArrowLeft size={14} />
         Back to Orders
       </Link>
 
       <PageHeader title="Order" italic={o.id?.slice(0, 8)} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <Card padding="lg" className="border border-[var(--color-border)] bg-[var(--color-bg)]">
-          <h3 className="text-[0.6rem] uppercase tracking-[0.15em] text-[#aaa] font-semibold mb-3">Status</h3>
+      <div className={styles.cardGrid}>
+        <Card padding="lg">
+          <h3 className={styles.sectionTitle}>Status</h3>
           <Badge variant={statusVariant[o.status] || "default"} size="lg">{o.status}</Badge>
-          <div className="mt-6 flex flex-col gap-2">
+          <div className={styles.statusActions}>
             {allowedTransitions[o.status]?.length > 0 && (
               <Button size="sm" variant="secondary" onClick={() => setStatusModal(true)}>Change Status</Button>
             )}
@@ -103,49 +104,49 @@ export default function OrderDetailPage() {
           </div>
         </Card>
 
-        <Card padding="lg" className="border border-[var(--color-border)] bg-[var(--color-bg)]">
-          <h3 className="text-[0.6rem] uppercase tracking-[0.15em] text-[#aaa] font-semibold mb-3">Details</h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Total</span><span className="font-serif font-medium">{formatCurrency(o.total)}</span></div>
-            <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Seller</span><span className="font-serif">{o.sellerEmail || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Buyer</span><span className="font-mono text-xs">{o.buyerId?.slice(0, 12) || "—"}</span></div>
-            <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Created</span><span>{formatDate(o.createdAt)}</span></div>
-            {o.purchaseId && <div className="flex justify-between"><span className="text-[var(--color-text-muted)]">Purchase</span><span className="font-mono text-xs">{o.purchaseId.slice(0, 8)}</span></div>}
+        <Card padding="lg">
+          <h3 className={styles.sectionTitle}>Details</h3>
+          <div className={styles.detailGrid}>
+            <div className={styles.detailRow}><span className={styles.detailLabel}>Total</span><span className={styles.detailValue}>{formatCurrency(o.total)}</span></div>
+            <div className={styles.detailRow}><span className={styles.detailLabel}>Seller</span><span style={{ fontFamily: "var(--font-serif)" }}>{o.sellerEmail || "—"}</span></div>
+            <div className={styles.detailRow}><span className={styles.detailLabel}>Buyer</span><span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem" }}>{o.buyerId?.slice(0, 12) || "—"}</span></div>
+            <div className={styles.detailRow}><span className={styles.detailLabel}>Created</span><span>{formatDate(o.createdAt)}</span></div>
+            {o.purchaseId && <div className={styles.detailRow}><span className={styles.detailLabel}>Purchase</span><span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem" }}>{o.purchaseId.slice(0, 8)}</span></div>}
           </div>
         </Card>
 
-        <Card padding="lg" className="border border-[var(--color-border)] bg-[var(--color-bg)]">
-          <h3 className="text-[0.6rem] uppercase tracking-[0.15em] text-[#aaa] font-semibold mb-3">Timeline</h3>
+        <Card padding="lg">
+          <h3 className={styles.sectionTitle}>Timeline</h3>
           {timeline?.events?.length ? (
-            <div className="space-y-3">
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {timeline.events.map((e: any, i: number) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full border-2 border-[var(--color-primary)] flex items-center justify-center mt-0.5 shrink-0">
-                    <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]" />
+                <div key={i} className={styles.timelineEntry}>
+                  <div className={styles.timelineDot}>
+                    <div className={styles.timelineInnerDot} />
                   </div>
                   <div>
                     <Badge variant={statusVariant[e.status] || "default"} size="sm">{e.status}</Badge>
-                    <p className="text-xs text-[var(--color-text-muted)] mt-1">{e.detail}</p>
-                    <p className="text-[0.6rem] text-[#aaa]">{formatDate(e.timestamp)}</p>
+                    <p className={styles.timelineDetail}>{e.detail}</p>
+                    <p className={styles.timelineDate}>{formatDate(e.timestamp)}</p>
                   </div>
                 </div>
               ))}
             </div>
-          ) : <p className="text-xs text-[var(--color-text-muted)]">No timeline available.</p>}
+          ) : <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>No timeline available.</p>}
         </Card>
       </div>
 
       {o.items?.length > 0 && (
-        <Card padding="lg" className="border border-[var(--color-border)] bg-[var(--color-bg)]">
-          <h3 className="text-[0.6rem] uppercase tracking-[0.15em] text-[#aaa] font-semibold mb-4">Items</h3>
-          <div className="space-y-2">
+        <Card padding="lg">
+          <h3 className={styles.sectionTitle} style={{ marginBottom: "1rem" }}>Items</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             {o.items.map((item: any, i: number) => (
-              <div key={i} className="flex justify-between items-center py-2 border-b border-[var(--color-border)] last:border-b-0">
+              <div key={i} className={styles.itemRow}>
                 <div>
-                  <span className="font-serif text-sm font-medium">{item.productName}</span>
-                  <span className="text-xs text-[var(--color-text-muted)] ml-2">x{item.quantity}</span>
+                  <span className={styles.itemName}>{item.productName}</span>
+                  <span className={styles.itemQuantity}>x{item.quantity}</span>
                 </div>
-                <span className="font-serif text-sm">{formatCurrency(item.subtotal)}</span>
+                <span className={styles.itemSubtotal}>{formatCurrency(item.subtotal)}</span>
               </div>
             ))}
           </div>
@@ -154,11 +155,11 @@ export default function OrderDetailPage() {
 
       <Modal open={statusModal} onClose={() => setStatusModal(false)} title="Change Order Status" description={`Current: ${o.status}. Select a new status.`}
         actions={<>
-          <button onClick={() => setStatusModal(false)} className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-4 py-2 border border-[var(--color-border)] bg-transparent text-[var(--color-text-muted)] cursor-pointer">Cancel</button>
-          <button onClick={handleStatusChange} disabled={!newStatus || acting} className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-4 py-2 border-none bg-[var(--color-primary)] text-white cursor-pointer disabled:opacity-40">Confirm</button>
+          <button onClick={() => setStatusModal(false)} className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}>Cancel</button>
+          <button onClick={handleStatusChange} disabled={!newStatus || acting} className={`${styles.modalBtn} ${styles.modalBtnPrimary}`}>Confirm</button>
         </>}
       >
-        <select value={newStatus} onChange={(e) => setNewStatus(e.target.value)} className="w-full px-3 py-2 border-[1.5px] border-[var(--color-border)] rounded-xl text-sm">
+        <select value={newStatus} onChange={(e) => setNewStatus(e.target.value)} className={styles.select}>
           <option value="">Select status...</option>
           {(allowedTransitions[o.status] || []).map((s) => (
             <option key={s} value={s}>{s}</option>
@@ -168,8 +169,8 @@ export default function OrderDetailPage() {
 
       <Modal open={refundModal} onClose={() => setRefundModal(false)} title="Refund Order" description="This will cancel the order and restore stock. This action cannot be undone."
         actions={<>
-          <button onClick={() => setRefundModal(false)} className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-4 py-2 border border-[var(--color-border)] bg-transparent text-[var(--color-text-muted)] cursor-pointer">Keep Order</button>
-          <button onClick={handleRefund} disabled={acting} className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-4 py-2 border-none bg-[var(--color-warning)] text-white cursor-pointer disabled:opacity-40">Confirm Refund</button>
+          <button onClick={() => setRefundModal(false)} className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}>Keep Order</button>
+          <button onClick={handleRefund} disabled={acting} className={`${styles.modalBtn} ${styles.modalBtnWarning}`}>Confirm Refund</button>
         </>}
       />
     </div>

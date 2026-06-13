@@ -5,14 +5,15 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { BookMarked } from "lucide-react";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { StatCard } from "@/components/ui/StatCard";
-import { Table, TableRow } from "@/components/ui/Table";
-import { Pagination } from "@/components/ui/Pagination";
-import { Spinner } from "@/components/ui/Spinner";
-import { EmptyState } from "@/components/ui/EmptyState";
-import { Badge } from "@/components/ui/Badge";
-import Button from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
+import { StatCard } from "@/components/ui/StatCard/StatCard";
+import { Table, TableRow } from "@/components/ui/Table/Table";
+import { Pagination } from "@/components/ui/Pagination/Pagination";
+import { Spinner } from "@/components/ui/Spinner/Spinner";
+import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
+import { Badge } from "@/components/ui/Badge/Badge";
+import Button from "@/components/ui/Button/Button";
+import styles from "./page.module.css";
 
 const statusVariant: Record<string, "default" | "primary" | "success" | "warning" | "error"> = {
   ACTIVE: "primary", COMPLETED: "success", CANCELLED: "error", EXPIRED: "warning",
@@ -39,18 +40,18 @@ export default function ReservationsPage() {
   return (
     <div>
       <PageHeader title="Reservations" italic="" description="Inventory reservations across the platform." />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      <div className={styles.statGrid}>
         <StatCard icon={<BookMarked size={16} />} value={data?.total ?? "—"} label="Total Reservations" />
       </div>
-      <div className="mb-6 sm:max-w-xs"><StatusFilter value={status} /></div>
+      <div className={styles.filterWrapper}><StatusFilter value={status} /></div>
       {loading ? <Spinner /> : !data?.reservations?.length ? <EmptyState title="No reservations found" /> : <>
         <Table headers={headers}>
           {data.reservations.map((r: any) => (
-            <TableRow key={r.id} gridTemplate={headers.map((h) => h.width).join(" ")} columns={[
-              <span className="font-mono text-xs text-[var(--color-text-muted)]">{r.productId?.slice(0, 10)}</span>,
+            <TableRow key={r.id} columns={[
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{r.productId?.slice(0, 10)}</span>,
               <span>{r.quantity}</span>,
               <Badge variant={statusVariant[r.status] || "default"}>{r.status}</Badge>,
-              <span className="text-xs text-[var(--color-text-muted)]">{formatDate(r.createdAt)}</span>,
+              <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{formatDate(r.createdAt)}</span>,
               <div>{r.status === "ACTIVE" && <Button size="sm" variant="ghost" onClick={() => handleRelease(r.id)}>Release</Button>}</div>,
             ]} />
           ))}
@@ -66,7 +67,7 @@ function StatusFilter({ value }: { value: string }) {
   const searchParams = useSearchParams();
   const setStatus = (s: string) => { const params = new URLSearchParams(searchParams.toString()); if (s) params.set("status", s); else params.delete("status"); params.set("page", "1"); router.push(`?${params.toString()}`); };
   return (
-    <select value={value} onChange={(e) => setStatus(e.target.value)} className="w-full sm:w-auto px-3 py-[0.6rem] text-sm border-[1.5px] border-[var(--color-border)] rounded-xl outline-none bg-white">
+    <select value={value} onChange={(e) => setStatus(e.target.value)} className={styles.select}>
       <option value="">All Status</option>
       <option value="ACTIVE">Active</option>
       <option value="COMPLETED">Completed</option>

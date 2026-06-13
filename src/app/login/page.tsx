@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { SignIn, useUser, useClerk } from "@clerk/nextjs";
 import { useAuth } from "@/lib/auth";
 import { ShieldAlert } from "lucide-react";
+import styles from "./page.module.css";
 
 export default function LoginPage() {
   const { isAdmin, isLoaded, userId } = useAuth();
@@ -20,30 +21,28 @@ export default function LoginPage() {
   }, [isLoaded, userId, isAdmin, router]);
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4">
-      <div className="flex flex-col items-center">
+    <div className={styles.wrapper}>
+      <div className={styles.inner}>
         {userId && !isAdmin ? (
-          <div className="border border-[var(--color-border)] bg-white p-10 text-center max-w-sm">
-            <div className="w-12 h-12 mx-auto mb-4 bg-[rgba(220,38,38,0.08)] flex items-center justify-center text-[var(--color-error)]">
+          <div className={styles.deniedCard}>
+            <div className={styles.deniedIcon}>
               <ShieldAlert size={24} />
             </div>
-            <h1 className="font-serif text-xl text-[var(--color-error)] mb-2">Access Denied</h1>
-            <p className="text-sm text-[var(--color-text-muted)] mb-6">
+            <h1 className={styles.deniedTitle}>Access Denied</h1>
+            <p className={styles.deniedText}>
               Your account does not have the <strong>super_admin</strong> role required to access the
               Control Plane.
             </p>
             <button
               onClick={() => signOut({ redirectUrl: "/login" })}
-              className="text-[0.65rem] uppercase tracking-[0.1em] font-semibold px-5 py-[0.6rem] border border-[var(--color-border)] bg-transparent text-[var(--color-text)] cursor-pointer hover:bg-black hover:text-white transition-colors"
+              className={styles.signOutBtn}
             >
               Sign in with another account
             </button>
           </div>
         ) : (
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 bg-[var(--color-primary)] text-white flex items-center justify-center font-serif text-xl mb-6">
-              CP
-            </div>
+          <div className={styles.signInWrapper}>
+            <div className={styles.logo}>CP</div>
             <SignIn
               routing="hash"
               forceRedirectUrl="/dashboard"

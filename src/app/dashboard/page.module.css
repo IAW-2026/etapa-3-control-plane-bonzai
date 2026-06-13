@@ -1,0 +1,80 @@
+.appGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .appGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.appCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.appCard:hover {
+  border-color: var(--color-primary);
+}
+
+.appIcon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.appBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.appNameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.appName {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  color: var(--color-primary);
+}
+
+.statusBadge {
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid;
+}
+
+.statusConnected {
+  color: var(--color-success);
+  background: rgba(22, 163, 74, 0.05);
+  border-color: rgba(22, 163, 74, 0.2);
+}
+
+.statusPending {
+  color: var(--color-warning);
+  background: rgba(139, 115, 85, 0.05);
+  border-color: rgba(139, 115, 85, 0.2);
+}
+
+.appDesc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-top: 0.5rem;
+}

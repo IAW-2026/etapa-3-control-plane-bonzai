@@ -65,26 +65,3 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-
-/* ── Table scrollbar ────────────────────────────────────────────────────── */
-
-.table-scroll::-webkit-scrollbar {
-  height: 8px;
-}
-
-.table-scroll::-webkit-scrollbar-track {
-  background: rgba(27, 61, 47, 0.04);
-}
-
-.table-scroll::-webkit-scrollbar-thumb {
-  background: rgba(27, 61, 47, 0.2);
-  border-radius: 4px;
-}
-
-.table-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(27, 61, 47, 0.35);
-}
-
-.table-scroll {
-  scrollbar-color: rgba(27,61,47,0.2) rgba(27,61,47,0.04);
-}
