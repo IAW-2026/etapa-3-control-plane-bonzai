@@ -11,7 +11,7 @@ export function Table({ headers, children, className }: TableProps) {
   const gridTemplate = headers.map((h) => h.width || "1fr").join(" ");
 
   return (
-    <div className={cn("overflow-x-auto table-scroll border border-[var(--color-border)]", className)}>
+    <div className={cn("overflow-x-auto table-scroll max-w-full border border-[var(--color-border)]", className)}>
       <div style={{ minWidth: 700 }}>
         <div
           className="grid gap-2 px-5 py-3 bg-[rgba(27,61,47,0.02)] border-b border-[var(--color-border)]"
