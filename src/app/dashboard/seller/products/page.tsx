@@ -13,6 +13,7 @@ import { Pagination } from "@/components/ui/Pagination/Pagination";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
 import { Badge } from "@/components/ui/Badge/Badge";
+import { ExportCsvButton } from "@/components/ui/ExportCsvButton/ExportCsvButton";
 import styles from "./page.module.css";
 
 const modVariant = (s: string) =>
@@ -58,7 +59,7 @@ export default function ProductsPage() {
 
   return (
     <div>
-      <PageHeader title="Products" italic="" description="All products across all sellers." />
+      <PageHeader title="Products" italic="" description="All products across all sellers." action={<ExportCsvButton filename="products.csv" headers={["Name", "Seller", "Price", "Stock", "Status"]} rows={data?.products?.map((p: any) => [p.name, p.seller?.email || "", formatCurrency(p.price), String(p.stock), p.moderationStatus]) || []} />} />
       <div className={styles.statGrid}>
         <StatCard icon={<Package size={16} />} value={data?.total ?? "—"} label="Total Products" />
       </div>

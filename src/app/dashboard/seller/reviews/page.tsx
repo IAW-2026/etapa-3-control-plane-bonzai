@@ -11,6 +11,7 @@ import { Table, TableRow } from "@/components/ui/Table/Table";
 import { Pagination } from "@/components/ui/Pagination/Pagination";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
+import { ExportCsvButton } from "@/components/ui/ExportCsvButton/ExportCsvButton";
 import styles from "./page.module.css";
 
 const headers = [
@@ -41,7 +42,7 @@ export default function ReviewsPage() {
 
   return (
     <div>
-      <PageHeader title="Reviews" italic="" description="Seller reviews from buyers." />
+      <PageHeader title="Reviews" italic="" description="Seller reviews from buyers." action={<ExportCsvButton filename="reviews.csv" headers={["Seller", "Rating", "Comment", "Date"]} rows={data?.reviews?.map((r: any) => [r.seller?.email || "", String(r.rating), r.comment || "", formatDate(r.createdAt)]) || []} />} />
       <div className={styles.statGrid}>
         <StatCard icon={<Star size={16} />} value={data?.total ?? "—"} label="Total Reviews" />
       </div>

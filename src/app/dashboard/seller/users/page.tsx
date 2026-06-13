@@ -13,6 +13,7 @@ import { Pagination } from "@/components/ui/Pagination/Pagination";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
 import { Badge } from "@/components/ui/Badge/Badge";
+import { ExportCsvButton } from "@/components/ui/ExportCsvButton/ExportCsvButton";
 import styles from "./page.module.css";
 
 const headers = [
@@ -40,7 +41,7 @@ export default function UsersPage() {
 
   return (
     <div>
-      <PageHeader title="Users" italic="" description="All sellers registered on the platform." />
+      <PageHeader title="Users" italic="" description="All sellers registered on the platform." action={<ExportCsvButton filename="users.csv" headers={["Email", "Status", "Approved", "Created"]} rows={data?.users?.map((u: any) => [u.email, u.suspended ? "Disabled" : "Active", u.approved ? "Yes" : "No", formatDate(u.createdAt)]) || []} />} />
       <div className={styles.statGrid}>
         <StatCard icon={<Users size={16} />} value={data?.total ?? "—"} label="Total Sellers" />
       </div>

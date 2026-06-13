@@ -13,6 +13,7 @@ import { Pagination } from "@/components/ui/Pagination/Pagination";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
 import { Badge } from "@/components/ui/Badge/Badge";
+import { ExportCsvButton } from "@/components/ui/ExportCsvButton/ExportCsvButton";
 import styles from "./page.module.css";
 
 const statusVariant: Record<string, "default" | "primary" | "success" | "warning" | "error"> = {
@@ -50,7 +51,7 @@ export default function OrdersPage() {
 
   return (
     <div>
-      <PageHeader title="Orders" italic="" description="All orders across all sellers." />
+      <PageHeader title="Orders" italic="" description="All orders across all sellers." action={<ExportCsvButton filename="orders.csv" headers={["ID", "Status", "Seller", "Total", "Date"]} rows={data?.orders?.map((o: any) => [o.id.slice(0, 8), o.status, o.sellerEmail || "", formatCurrency(o.total), formatDate(o.createdAt)]) || []} />} />
 
       <div className={styles.statGrid}>
         <StatCard icon={<ShoppingCart size={16} />} value={data?.total ?? "—"} label="Total Orders" />

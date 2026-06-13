@@ -13,6 +13,7 @@ import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
 import { Badge } from "@/components/ui/Badge/Badge";
 import Button from "@/components/ui/Button/Button";
+import { ExportCsvButton } from "@/components/ui/ExportCsvButton/ExportCsvButton";
 import styles from "./page.module.css";
 
 const statusVariant: Record<string, "default" | "primary" | "success" | "warning" | "error"> = {
@@ -39,7 +40,7 @@ export default function ReservationsPage() {
 
   return (
     <div>
-      <PageHeader title="Reservations" italic="" description="Inventory reservations across the platform." />
+      <PageHeader title="Reservations" italic="" description="Inventory reservations across the platform." action={<ExportCsvButton filename="reservations.csv" headers={["Product ID", "Quantity", "Status", "Created"]} rows={data?.reservations?.map((r: any) => [r.productId?.slice(0, 10), String(r.quantity), r.status, formatDate(r.createdAt)]) || []} />} />
       <div className={styles.statGrid}>
         <StatCard icon={<BookMarked size={16} />} value={data?.total ?? "—"} label="Total Reservations" />
       </div>

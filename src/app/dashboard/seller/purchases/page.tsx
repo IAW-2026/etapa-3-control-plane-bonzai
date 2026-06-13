@@ -12,6 +12,7 @@ import { Pagination } from "@/components/ui/Pagination/Pagination";
 import { Spinner } from "@/components/ui/Spinner/Spinner";
 import { EmptyState } from "@/components/ui/EmptyState/EmptyState";
 import { Badge } from "@/components/ui/Badge/Badge";
+import { ExportCsvButton } from "@/components/ui/ExportCsvButton/ExportCsvButton";
 import styles from "./page.module.css";
 
 const statusVariant: Record<string, "default" | "primary" | "success" | "warning" | "error"> = {
@@ -47,7 +48,7 @@ export default function PurchasesPage() {
 
   return (
     <div>
-      <PageHeader title="Purchases" italic="" description="All purchases across the platform." />
+      <PageHeader title="Purchases" italic="" description="All purchases across the platform." action={<ExportCsvButton filename="purchases.csv" headers={["ID", "Date", "Orders", "Items", "Total"]} rows={data?.purchases?.map((p: any) => [p.id.slice(0, 8), formatDate(p.createdAt), String(p.orders?.length || 0), String((p.orders || []).reduce((s: number, o: any) => s + (o.items?.length || 0), 0)), formatCurrency((p.orders || []).reduce((s: number, o: any) => s + o.total, 0))]) || []} />} />
 
       <div className={styles.statGrid}>
         <StatCard icon={<CreditCard size={16} />} value={data?.total ?? "—"} label="Total Purchases" />
