@@ -38,6 +38,16 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
+::selection {
+  background: #1a3a2b;
+  color: #f8f7f2;
+}
+
+::-moz-selection {
+  background: #1a3a2b;
+  color: #f8f7f2;
+}
+
 body {
   min-height: 100%;
   display: flex;

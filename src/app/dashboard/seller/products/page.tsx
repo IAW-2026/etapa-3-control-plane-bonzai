@@ -63,7 +63,7 @@ export default function ProductsPage() {
       <div className={styles.statGrid}>
         <StatCard icon={<Package size={16} />} value={data?.total ?? "—"} label="Total Products" />
       </div>
-      <div className={styles.searchWrapper}><SearchInput placeholder="Search products..." /></div>
+      <div className={styles.searchWrapper}><SearchInput placeholder="Search by name or seller..." /></div>
       {loading ? <Spinner /> : !data?.products?.length ? <EmptyState title="No products found" /> : <>
         <Table headers={headers}>
           {data.products.map((p: any) => (

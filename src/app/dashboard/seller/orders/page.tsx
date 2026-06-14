@@ -60,7 +60,7 @@ export default function OrdersPage() {
 
       <div className={styles.filterRow}>
         <div className={styles.searchWrapper}>
-          <SearchInput placeholder="Search by product..." />
+          <SearchInput placeholder="Search by product name or ID..." />
         </div>
         <StatusFilter value={status} />
       </div>

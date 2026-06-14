@@ -81,7 +81,6 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
     appSections.forEach((s) => {
       initial[s.label] = s.items.some((item) => pathname.startsWith(item.href));
     });
-    if (!Object.values(initial).some(Boolean)) initial["Seller App"] = true;
     return initial;
   });
 

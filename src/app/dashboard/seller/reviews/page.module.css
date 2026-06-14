@@ -10,3 +10,42 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.filterWrapper {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .filterWrapper {
+    max-width: 20rem;
+  }
+}
+
+.select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1.5px solid #1a3a2b;
+  border-radius: var(--radius-xl);
+  outline: none;
+  background: white;
+  color: #1a3a2b;
+  font-weight: 600;
+  cursor: pointer;
+  accent-color: #1a3a2b;
+}
+
+.select:hover {
+  border-color: #0f2a1e;
+}
+
+.select:focus {
+  border-color: #0f2a1e;
+  box-shadow: 0 0 0 2px rgba(26, 58, 43, 0.2);
+}
+
+@media (min-width: 640px) {
+  .select {
+    width: auto;
+  }
+}

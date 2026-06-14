@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
@@ -46,6 +46,7 @@ export default function ReviewsPage() {
       <div className={styles.statGrid}>
         <StatCard icon={<Star size={16} />} value={data?.total ?? "—"} label="Total Reviews" />
       </div>
+      <div className={styles.filterWrapper}><RatingFilter value={rating} /></div>
       {loading ? <Spinner /> : !data?.reviews?.length ? <EmptyState title="No reviews yet" /> : <>
         <Table headers={headers}>
           {data.reviews.map((r: any) => (
@@ -60,5 +61,28 @@ export default function ReviewsPage() {
         <Pagination total={data.total} page={page} limit={10} />
       </>}
     </div>
+  );
+}
+
+function RatingFilter({ value }: { value: string }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const setRating = (r: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (r) params.set("rating", r);
+    else params.delete("rating");
+    params.set("page", "1");
+    router.push(`?${params.toString()}`);
+  };
+
+  return (
+    <select value={value} onChange={(e) => setRating(e.target.value)} className={styles.select}>
+      <option value="">All Ratings</option>
+      <option value="5">5 Stars</option>
+      <option value="4">4 Stars & up</option>
+      <option value="3">3 Stars & up</option>
+      <option value="2">2 Stars & up</option>
+      <option value="1">1 Star & up</option>
+    </select>
   );
 }
