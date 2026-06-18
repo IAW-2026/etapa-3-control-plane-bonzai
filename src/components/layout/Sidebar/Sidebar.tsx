@@ -18,6 +18,7 @@ import {
   Menu,
   ChevronDown,
   ChevronRight,
+  AlertTriangle,
 } from "lucide-react";
 import { useClerk, useUser } from "@clerk/nextjs";
 import styles from "./Sidebar.module.css";
@@ -67,7 +68,10 @@ const appSections: AppSection[] = [
     label: "Shipping App",
     icon: <Truck size={16} />,
     items: [
-      { label: "Overview", href: "/dashboard/shipping", icon: <Truck size={16} /> },
+      { label: "Dashboard", href: "/dashboard/shipping", icon: <LayoutDashboard size={16} /> },
+      { label: "Shipments", href: "/dashboard/shipping/shipments", icon: <Truck size={16} /> },
+      { label: "Incidents", href: "/dashboard/shipping/incidents", icon: <AlertTriangle size={16} /> },
+      { label: "Staff", href: "/dashboard/shipping/staff", icon: <Users size={16} /> },
     ],
   },
 ];
@@ -86,6 +90,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
   const isActive = (href: string) => {
     if (href === "/dashboard/seller") return pathname === "/dashboard/seller";
+    if (href === "/dashboard/shipping") return pathname === "/dashboard/shipping";
     return pathname.startsWith(href);
   };
 

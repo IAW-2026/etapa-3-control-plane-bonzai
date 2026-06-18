@@ -9,7 +9,7 @@ const apps = [
   { name: "Seller App", desc: "Products, orders, users, reservations, reviews and system health.", href: "/dashboard/seller", icon: Store, color: "var(--color-primary)", status: "Connected" },
   { name: "Payments App", desc: "Payment processing, refunds and transaction history.", href: "/dashboard/payments", icon: CreditCard, color: "var(--color-accent)", status: "Pending" },
   { name: "Buyer App", desc: "Customer storefront, browsing and purchasing.", href: "/dashboard/buyer", icon: Users, color: "var(--color-secondary)", status: "Pending" },
-  { name: "Shipping App", desc: "Shipping dispatch, tracking and delivery.", href: "/dashboard/shipping", icon: Truck, color: "var(--color-warning)", status: "Pending" },
+  { name: "Shipping App", desc: "Shipping dispatch, tracking and delivery.", href: "/dashboard/shipping", icon: Truck, color: "var(--color-warning)", status: "Connected" },
 ];
 
 export default function DashboardHome() {
