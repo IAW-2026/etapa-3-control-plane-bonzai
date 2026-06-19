@@ -1,5 +1,9 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-const SERVICE_KEY = process.env.NEXT_PUBLIC_SERVICE_KEY || "";
+const API_BASE = typeof window !== "undefined"
+  ? "/api/seller"
+  : (process.env.SELLER_API_URL || "https://proyecto-c-seller-bonzai.vercel.app/");
+const SERVICE_KEY = typeof window !== "undefined"
+  ? ""
+  : (process.env.SELLER_SERVICE_KEY || "");
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const headers: Record<string, string> = {

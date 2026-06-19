@@ -27,7 +27,7 @@ export default function SellerDashboard() {
     return (
       <div className={styles.errorState}>
         <p className={styles.errorTitle}>Could not load seller data</p>
-        <p className={styles.errorHint}>Make sure the Seller App server is running and NEXT_PUBLIC_API_URL is set correctly.</p>
+        <p className={styles.errorHint}>Make sure the Seller App server is running and SELLER_API_URL is set correctly.</p>
       </div>
     );
   }

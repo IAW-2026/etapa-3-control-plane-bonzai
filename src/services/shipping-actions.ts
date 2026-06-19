@@ -3,10 +3,13 @@
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-const API_BASE = process.env.NEXT_PUBLIC_SHIPPING_API_URL || "";
+const API_BASE = process.env.SHIPPING_API_URL || "";
 const SERVICE_KEY = process.env.SHIPPING_SERVICE_KEY || "";
 
 async function serverRequest<T>(path: string, options?: RequestInit): Promise<T> {
+  if (!API_BASE) {
+    throw new Error("Shipping API URL is not configured. Please check your environment variables.");
+  }
   const { getToken } = await auth();
   const token = await getToken();
 
