@@ -19,6 +19,10 @@ import {
   ChevronDown,
   ChevronRight,
   AlertTriangle,
+  Wallet,
+  ShieldCheck,
+  ArrowRightLeft,
+  Receipt,
 } from "lucide-react";
 import { useClerk, useUser } from "@clerk/nextjs";
 import styles from "./Sidebar.module.css";
@@ -54,7 +58,13 @@ const appSections: AppSection[] = [
     label: "Payments App",
     icon: <CreditCard size={16} />,
     items: [
-      { label: "Overview", href: "/dashboard/payments", icon: <CreditCard size={16} /> },
+      { label: "Dashboard", href: "/dashboard/payments", icon: <LayoutDashboard size={16} /> },
+      { label: "Transactions", href: "/dashboard/payments/transactions", icon: <ArrowRightLeft size={16} /> },
+      { label: "Disputes", href: "/dashboard/payments/disputes", icon: <AlertTriangle size={16} /> },
+      { label: "Wallets", href: "/dashboard/payments/wallets", icon: <Wallet size={16} /> },
+      { label: "Sessions", href: "/dashboard/payments/sessions", icon: <Receipt size={16} /> },
+      { label: "Health", href: "/dashboard/payments/health", icon: <HeartPulse size={16} /> },
+      { label: "Audit", href: "/dashboard/payments/audit", icon: <ShieldCheck size={16} /> },
     ],
   },
   {
@@ -91,6 +101,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   const isActive = (href: string) => {
     if (href === "/dashboard/seller") return pathname === "/dashboard/seller";
     if (href === "/dashboard/shipping") return pathname === "/dashboard/shipping";
+    if (href === "/dashboard/payments") return pathname === "/dashboard/payments";
     return pathname.startsWith(href);
   };
 
