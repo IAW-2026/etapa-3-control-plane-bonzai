@@ -1,10 +1,5 @@
-import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>Control Plane</h1>
-      <p><Link href="/login">Go to Login</Link></p>
-    </div>
-  );
+  redirect("/login");
 }
