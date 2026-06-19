@@ -9,5 +9,7 @@ export default clerkMiddleware(async (auth, req) => {
     });
 
     export const config = {
-    matcher: ["/((?!_next|.*\\..*).*)"],
+    matcher: [
+        "/((?!_next/static|_next/image|_next/data|favicon.ico).*)",
+    ],
 };
