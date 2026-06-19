@@ -6,8 +6,8 @@ const API_URL = process.env.SELLER_API_URL || "https://proyecto-c-seller-bonzai.
 const SERVICE_KEY = process.env.SELLER_SERVICE_KEY || "";
 
 async function handleProxy(req: NextRequest, method: string, pathParams: string[]) {
-  const actualPath = pathParams.join("/");
-  const search = req.nextUrl.search;
+  const actualPath = Array.isArray(pathParams) ? pathParams.join("/") : "";
+  const search = req.nextUrl.search || "";
   const upstreamUrl = `${API_URL.replace(/\/$/, "")}/${actualPath}${search}`;
 
   let body: any = undefined;
@@ -40,36 +40,81 @@ async function handleProxy(req: NextRequest, method: string, pathParams: string[
     }
 
     return NextResponse.json(data);
-  } catch (err) {
+  } catch (err: any) {
     console.error(`[Proxy Error] Failed request to Seller API (${method} ${actualPath}):`, err);
     return NextResponse.json(
-      { error: "UPSTREAM_ERROR", message: "No se pudo conectar con el servicio externo." },
+      { error: "UPSTREAM_ERROR", message: err.message || "No se pudo conectar con el servicio externo." },
       { status: 502 }
     );
   }
 }
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  const { path } = await params;
-  return handleProxy(req, "GET", path);
+export async function GET(req: NextRequest, context: any) {
+  try {
+    const params = await context?.params;
+    const path = params?.path || [];
+    return await handleProxy(req, "GET", path);
+  } catch (err: any) {
+    console.error("Error in GET handler:", err);
+    return NextResponse.json(
+      { error: "GET_HANDLER_ERROR", message: err.message },
+      { status: 500 }
+    );
+  }
 }
 
-export async function POST(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  const { path } = await params;
-  return handleProxy(req, "POST", path);
+export async function POST(req: NextRequest, context: any) {
+  try {
+    const params = await context?.params;
+    const path = params?.path || [];
+    return await handleProxy(req, "POST", path);
+  } catch (err: any) {
+    console.error("Error in POST handler:", err);
+    return NextResponse.json(
+      { error: "POST_HANDLER_ERROR", message: err.message },
+      { status: 500 }
+    );
+  }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  const { path } = await params;
-  return handleProxy(req, "PATCH", path);
+export async function PATCH(req: NextRequest, context: any) {
+  try {
+    const params = await context?.params;
+    const path = params?.path || [];
+    return await handleProxy(req, "PATCH", path);
+  } catch (err: any) {
+    console.error("Error in PATCH handler:", err);
+    return NextResponse.json(
+      { error: "PATCH_HANDLER_ERROR", message: err.message },
+      { status: 500 }
+    );
+  }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  const { path } = await params;
-  return handleProxy(req, "PUT", path);
+export async function PUT(req: NextRequest, context: any) {
+  try {
+    const params = await context?.params;
+    const path = params?.path || [];
+    return await handleProxy(req, "PUT", path);
+  } catch (err: any) {
+    console.error("Error in PUT handler:", err);
+    return NextResponse.json(
+      { error: "PUT_HANDLER_ERROR", message: err.message },
+      { status: 500 }
+    );
+  }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-  const { path } = await params;
-  return handleProxy(req, "DELETE", path);
+export async function DELETE(req: NextRequest, context: any) {
+  try {
+    const params = await context?.params;
+    const path = params?.path || [];
+    return await handleProxy(req, "DELETE", path);
+  } catch (err: any) {
+    console.error("Error in DELETE handler:", err);
+    return NextResponse.json(
+      { error: "DELETE_HANDLER_ERROR", message: err.message },
+      { status: 500 }
+    );
+  }
 }
