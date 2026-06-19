@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 
 const API_URL = process.env.SELLER_API_URL || "https://proyecto-c-seller-bonzai.vercel.app/";
