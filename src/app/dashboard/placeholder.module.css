@@ -1,0 +1,30 @@
+.wrapper {
+  text-align: center;
+  padding: 5rem 0;
+  border: 1px solid var(--color-border);
+}
+
+.icon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1.5rem;
+  background: rgba(27, 61, 47, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-warning);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.hint {
+  font-size: 0.875rem;
+  color: #aaa;
+  max-width: 28rem;
+  margin: 0 auto;
+}

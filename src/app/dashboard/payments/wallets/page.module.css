@@ -1,0 +1,17 @@
+.filterRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .filterRow {
+    flex-direction: row;
+  }
+}
+
+.searchWrapper {
+  flex: 1;
+  min-width: 0;
+}
