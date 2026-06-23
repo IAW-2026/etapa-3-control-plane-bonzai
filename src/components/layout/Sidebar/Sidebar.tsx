@@ -23,6 +23,7 @@ import {
   ShieldCheck,
   ArrowRightLeft,
   Receipt,
+  MapPin,
 } from "lucide-react";
 import { useClerk, useUser } from "@clerk/nextjs";
 import styles from "./Sidebar.module.css";
@@ -71,7 +72,10 @@ const appSections: AppSection[] = [
     label: "Buyer App",
     icon: <Users size={16} />,
     items: [
-      { label: "Overview", href: "/dashboard/buyer", icon: <Store size={16} /> },
+      { label: "Overview", href: "/dashboard/buyer", icon: <LayoutDashboard size={16} /> },
+      { label: "Buyers", href: "/dashboard/buyer/buyers", icon: <Users size={16} /> },
+      { label: "Shipping Addresses", href: "/dashboard/buyer/shipping-addresses", icon: <MapPin size={16} /> },
+      { label: "Carts", href: "/dashboard/buyer/carts", icon: <ShoppingCart size={16} /> },
     ],
   },
   {
@@ -102,6 +106,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
     if (href === "/dashboard/seller") return pathname === "/dashboard/seller";
     if (href === "/dashboard/shipping") return pathname === "/dashboard/shipping";
     if (href === "/dashboard/payments") return pathname === "/dashboard/payments";
+    if (href === "/dashboard/buyer") return pathname === "/dashboard/buyer";
     return pathname.startsWith(href);
   };
 
