@@ -40,10 +40,11 @@ export async function fetchDeliveryStats() {
   return serverRequest<any>("/api/analytics/delivery-stats");
 }
 
-export async function fetchShipments(page = 1, limit = 10, status = "", sellerId = "") {
+export async function fetchShipments(page = 1, limit = 10, status = "", sellerId = "", search = "") {
   const params = new URLSearchParams({ page: String(page), limit: String(limit) });
   if (status) params.set("status", status);
   if (sellerId) params.set("seller_id", sellerId);
+  if (search) params.set("q", search);
   return serverRequest<any>(`/api/admin/shipments?${params.toString()}`);
 }
 

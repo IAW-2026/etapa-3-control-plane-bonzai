@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Package, X, EyeOff, Eye } from "lucide-react";
 import { api } from "@/lib/api";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, useSafePage } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
 import { StatCard } from "@/components/ui/StatCard/StatCard";
 import { Table, TableRow } from "@/components/ui/Table/Table";
@@ -32,7 +32,8 @@ const headers = [
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
-  const page = parseInt(searchParams.get("page") || "1", 10);
+  const router = useRouter();
+  const page = useSafePage();
   const search = searchParams.get("search") || "";
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -47,6 +48,23 @@ export default function ProductsPage() {
   };
 
   useEffect(() => { load(); }, [page, search]);
+
+  useEffect(() => {
+    if (!data) return;
+    const results = data?.products;
+    const total = data?.total;
+    if (!Array.isArray(results) || results.length > 0) return;
+    if (page <= 1) return;
+    let target = 1;
+    if (total && total > 0) {
+      const totalPages = Math.ceil(total / 10);
+      target = page <= totalPages ? page : totalPages;
+    }
+    if (target === page) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("page", String(target));
+    router.replace(url.pathname + url.search);
+  }, [data, page]);
 
   const handleToggleSuspend = async (product: any) => {
     const newSuspended = !product.suspended;

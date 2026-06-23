@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import { api } from "@/lib/api";
-import { formatDate } from "@/lib/utils";
+import { formatDate, useSafePage } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
 import { StatCard } from "@/components/ui/StatCard/StatCard";
 import { Table, TableRow } from "@/components/ui/Table/Table";
@@ -23,7 +23,8 @@ const headers = [
 
 export default function ReviewsPage() {
   const searchParams = useSearchParams();
-  const page = parseInt(searchParams.get("page") || "1", 10);
+  const router = useRouter();
+  const page = useSafePage();
   const rating = searchParams.get("rating") || "";
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,23 @@ export default function ReviewsPage() {
       .catch(() => setData(null))
       .finally(() => setLoading(false));
   }, [page, rating]);
+
+  useEffect(() => {
+    if (!data) return;
+    const results = data?.reviews;
+    const total = data?.total;
+    if (!Array.isArray(results) || results.length > 0) return;
+    if (page <= 1) return;
+    let target = 1;
+    if (total && total > 0) {
+      const totalPages = Math.ceil(total / 10);
+      target = page <= totalPages ? page : totalPages;
+    }
+    if (target === page) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("page", String(target));
+    router.replace(url.pathname + url.search);
+  }, [data, page]);
 
   const renderStars = (r: number) => Array.from({ length: 5 }, (_, i) => (
     <Star key={i} size={12} fill={i < r ? "var(--color-accent)" : "none"} color={i < r ? "var(--color-accent)" : "var(--color-border)"} />

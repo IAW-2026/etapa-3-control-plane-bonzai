@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { fetchCheckoutSessions } from "@/services/payments-actions";
-import { formatARS, formatDate } from "@/lib/utils";
+import { formatARS, formatDate, useSafePage } from "@/lib/utils";
 import { PageHeader } from "@/components/ui/PageHeader/PageHeader";
 import { Table, TableRow } from "@/components/ui/Table/Table";
 import { SearchInput } from "@/components/ui/SearchInput/SearchInput";
@@ -33,7 +33,7 @@ const headers = [
 export default function CheckoutSessionsPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const page = parseInt(searchParams.get("page") || "1", 10);
+  const page = useSafePage();
   const status = searchParams.get("status") || "";
   const buyerId = searchParams.get("search") || "";
   const [data, setData] = useState<any>(null);
@@ -46,6 +46,23 @@ export default function CheckoutSessionsPage() {
       .catch(() => setData(null))
       .finally(() => setLoading(false));
   }, [page, status, buyerId]);
+
+  useEffect(() => {
+    if (!data) return;
+    const results = data?.sessions;
+    const total = data?.pagination?.total;
+    if (!Array.isArray(results) || results.length > 0) return;
+    if (page <= 1) return;
+    let target = 1;
+    if (total && total > 0) {
+      const totalPages = Math.ceil(total / 10);
+      target = page <= totalPages ? page : totalPages;
+    }
+    if (target === page) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("page", String(target));
+    router.replace(url.pathname + url.search);
+  }, [data, page]);
 
   const pagination = data?.pagination || {};
 
