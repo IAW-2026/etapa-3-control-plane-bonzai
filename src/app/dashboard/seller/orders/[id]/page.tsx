@@ -22,24 +22,14 @@ const statusVariant: Record<string, "default" | "primary" | "success" | "warning
   CANCELLED: "error",
 };
 
-const allowedTransitions: Record<string, string[]> = {
-  PENDING: ["PAID", "CANCELLED"],
-  PAID: ["AWAITING_TRACKING"],
-  AWAITING_TRACKING: ["SHIPPED"],
-  SHIPPED: [],
-  CANCELLED: [],
-};
-
-const canRefund = (status: string) => status === "PENDING" || status === "PAID";
+const canCancel = (status: string) => status === "PENDING";
 
 export default function OrderDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<any>(null);
   const [timeline, setTimeline] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [statusModal, setStatusModal] = useState(false);
-  const [newStatus, setNewStatus] = useState("");
-  const [refundModal, setRefundModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
   const [acting, setActing] = useState(false);
 
   const load = () => {
@@ -55,24 +45,13 @@ export default function OrderDetailPage() {
 
   useEffect(() => { load(); }, [id]);
 
-  const handleStatusChange = async () => {
-    if (!newStatus) return;
+  const handleCancel = async () => {
     setActing(true);
     try {
-      await api.updateOrderStatus(id, newStatus);
-      setStatusModal(false);
+      await api.refundOrder(id, "Cancelled by admin");
+      setCancelModal(false);
       load();
-    } catch { alert("Failed to update status"); }
-    setActing(false);
-  };
-
-  const handleRefund = async () => {
-    setActing(true);
-    try {
-      await api.refundOrder(id, "Admin refund");
-      setRefundModal(false);
-      load();
-    } catch { alert("Failed to refund"); }
+    } catch { alert("Failed to cancel order"); }
     setActing(false);
   };
 
@@ -95,11 +74,8 @@ export default function OrderDetailPage() {
           <h3 className={styles.sectionTitle}>Status</h3>
           <Badge variant={statusVariant[o.status] || "default"} size="lg">{o.status}</Badge>
           <div className={styles.statusActions}>
-            {allowedTransitions[o.status]?.length > 0 && (
-              <Button size="sm" variant="secondary" onClick={() => setStatusModal(true)}>Change Status</Button>
-            )}
-            {canRefund(o.status) && (
-              <Button size="sm" variant="ghost" onClick={() => setRefundModal(true)}>Refund & Cancel</Button>
+            {canCancel(o.status) && (
+              <Button size="sm" variant="ghost" onClick={() => setCancelModal(true)}>Cancel Order</Button>
             )}
           </div>
         </Card>
@@ -153,24 +129,10 @@ export default function OrderDetailPage() {
         </Card>
       )}
 
-      <Modal open={statusModal} onClose={() => setStatusModal(false)} title="Change Order Status" description={`Current: ${o.status}. Select a new status.`}
+      <Modal open={cancelModal} onClose={() => setCancelModal(false)} title="Cancel Order" description="This will cancel the order and restore stock. This action cannot be undone."
         actions={<>
-          <button onClick={() => setStatusModal(false)} className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}>Cancel</button>
-          <button onClick={handleStatusChange} disabled={!newStatus || acting} className={`${styles.modalBtn} ${styles.modalBtnPrimary}`}>Confirm</button>
-        </>}
-      >
-        <select value={newStatus} onChange={(e) => setNewStatus(e.target.value)} className={styles.select}>
-          <option value="">Select status...</option>
-          {(allowedTransitions[o.status] || []).map((s) => (
-            <option key={s} value={s}>{s}</option>
-          ))}
-        </select>
-      </Modal>
-
-      <Modal open={refundModal} onClose={() => setRefundModal(false)} title="Refund Order" description="This will cancel the order and restore stock. This action cannot be undone."
-        actions={<>
-          <button onClick={() => setRefundModal(false)} className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}>Keep Order</button>
-          <button onClick={handleRefund} disabled={acting} className={`${styles.modalBtn} ${styles.modalBtnWarning}`}>Confirm Refund</button>
+          <button onClick={() => setCancelModal(false)} className={`${styles.modalBtn} ${styles.modalBtnSecondary}`}>Keep Order</button>
+          <button onClick={handleCancel} disabled={acting} className={`${styles.modalBtn} ${styles.modalBtnWarning}`}>Confirm Cancel</button>
         </>}
       />
     </div>
