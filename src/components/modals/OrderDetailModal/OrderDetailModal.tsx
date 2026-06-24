@@ -19,13 +19,13 @@ const statusVariant: Record<string, "default" | "primary" | "success" | "warning
 
 const allowedTransitions: Record<string, string[]> = {
   PENDING: ["PAID", "CANCELLED"],
-  PAID: ["AWAITING_TRACKING"],
-  AWAITING_TRACKING: ["SHIPPED"],
+  PAID: [],
+  AWAITING_TRACKING: [],
   SHIPPED: [],
   CANCELLED: [],
 };
 
-const canRefund = (status: string) => status === "PENDING" || status === "PAID";
+const canRefund = (status: string) => status === "PENDING";
 
 interface OrderDetailModalProps {
   orderId: string;
