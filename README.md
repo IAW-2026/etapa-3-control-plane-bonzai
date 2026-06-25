@@ -153,18 +153,3 @@ Las rutas de proxy (`/api/seller/[...path]`, `/api/buyer/[...path]`) evitan CORS
 - **Base de datos (directa):** Neon PostgreSQL (solo para Clerk webhooks locales)
 - **Deploy:** Vercel (Framework Preset: Next.js)
 
----
-
-## Posibles futuras implementaciones
-
-- **Dashboard de drivers**: la sidebar ya referencia `/dashboard/shipping/staff/drivers` pero la ruta no existe — implementar vista de listado/detalle de drivers.
-- **Gráficos y analytics**: `recharts` ya está en las dependencias pero no se usa en ninguna página. Agregar gráficos de evolución de transacciones, ingresos por período, distribución de estados, etc.
-- **Notificaciones en tiempo real**: WebSocket o Server-Sent Events para alertar sobre nuevas disputas, transacciones fallidas o cambios de estado críticos.
-- **Exportación de datos avanzada**: actualmente hay un `ExportCsvButton` componente, pero solo unas pocas páginas lo integran. Extender a todas las tablas.
-- **Panel de logs de auditoría**: vista unificada de todas las operaciones de escritura (force-status, adjust-balance, etc.) con búsqueda y filtros.
-- **Roles y permisos granulares**: actualmente solo hay `super_admin`. Agregar roles como `payments_operator`, `shipping_manager`, `support_agent` con permisos por sección.
-- **Modo oscuro**: implementar theme switching usando CSS custom properties ya definidas.
-- **Multi-idioma**: internacionalización (i18n) con Next.js, inicialmente español e inglés.
-- **Pruebas automatizadas**: agregar tests E2E con Playwright o Cypress para cubrir los flujos críticos (login, transacciones, auditoría).
-- **Historial de cambios en wallets**: mostrar timeline completo de ajustes de saldo con filtros y paginación.
-- **Webhook receiver**: panel para visualizar y reintentar webhooks fallidos de Clerk, Mercado Pago, etc.
