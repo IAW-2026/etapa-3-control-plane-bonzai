@@ -1,0 +1,191 @@
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .statGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Purchase detail modal ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal {
+  background: white;
+  border: 1px solid var(--color-border);
+  width: 100%;
+  max-width: 42rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.modalTitle {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.modalId {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.modalDate {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: 0.25rem;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  color: var(--color-text);
+}
+
+.modalSummary {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem;
+  margin: 1rem 1.5rem;
+  background: rgba(27, 61, 47, 0.02);
+  border: 1px solid var(--color-border);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.summaryItem {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.summaryTotal {
+  margin-left: auto;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.orderCard {
+  border: 1px solid var(--color-border);
+  padding: 1rem;
+}
+
+.orderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.orderHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.orderId {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.orderTotal {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.orderMeta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.orderMetaItem {
+  display: block;
+}
+
+.orderBuyerId {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+}
+
+.orderItems {
+  border-top: 1px solid var(--color-border);
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.orderItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.orderItemName {
+  font-family: var(--font-serif);
+}
+
+.orderItemMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.orderItemSubtotal {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: var(--color-text);
+}

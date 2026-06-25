@@ -1,0 +1,53 @@
+.card {
+  background: transparent;
+}
+
+.shadow {
+  box-shadow: var(--shadow-md);
+}
+
+.paddingNone {
+  padding: 0;
+}
+
+.paddingSm {
+  padding: 0.75rem;
+}
+
+.paddingMd {
+  padding: 1rem;
+}
+
+.paddingLg {
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.headerTitle {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--color-primary);
+}
+
+.headerDescription {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.headerAction {
+  flex-shrink: 0;
+}

@@ -1,0 +1,35 @@
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .statGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .statGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.errorState {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.errorTitle {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-text-muted);
+}
+
+.errorHint {
+  font-size: 0.875rem;
+  color: #aaa;
+  margin-top: 0.5rem;
+}

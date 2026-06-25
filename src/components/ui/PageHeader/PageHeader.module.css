@@ -1,0 +1,51 @@
+.header {
+  margin-bottom: 2.5rem;
+  border-left: 2px solid var(--color-primary);
+  padding-left: 2rem;
+}
+
+@media (max-width: 767px) {
+  .header {
+    border-left: none;
+    border-top: 2px solid var(--color-primary);
+    padding-top: 1.5rem;
+    padding-left: 0;
+  }
+}
+
+.inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: var(--color-primary);
+}
+
+@media (max-width: 767px) {
+  .title {
+    font-size: 1.75rem;
+  }
+}
+
+.italic {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.025em;
+  margin-top: 0.25rem;
+}
+
+.action {
+  flex-shrink: 0;
+}
