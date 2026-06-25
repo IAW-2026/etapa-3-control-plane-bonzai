@@ -10,7 +10,7 @@ Panel de administración unificada del ecosistema Bonzai. Permite gestionar las 
 
 | Email | Rol |
 |---|---|
-| `seller_admin+clerk_test@iaw.com` | Administrador (`super_admin`) |
+| `super_admin+clerk_test@iaw.com` | Administrador (`super_admin`) |
 
 Contraseña: `iawuser#`
 
